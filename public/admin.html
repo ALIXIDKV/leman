@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LEMAN — Admin</title>
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link rel="stylesheet" href="admin.css">
+<style>
+  @media (max-width:820px){ .nav__links{display:flex !important;margin-left:auto;} }
+</style>
+</head>
+<body>
+
+<div id="loader"><img class="loader__logo" src="assets/logo.jpg" alt="Leman Market" data-logo><div class="loader__spinner"></div></div>
+
+<div id="adminLock" class="admin-lock">
+  <img src="assets/logo.jpg" alt="" data-logo style="width:64px;height:64px;object-fit:cover;border-radius:12px;">
+  <h2>Admin Area</h2>
+  <p class="section__lede">Masukkan password admin buat lanjut.</p>
+  <input type="password" id="adminPass" placeholder="Password">
+  <button class="btn btn--primary" id="adminLoginBtn">Masuk</button>
+  <p id="adminLoginError" style="color:var(--danger);font-size:.82rem;display:none;">Password salah.</p>
+</div>
+
+<div id="adminApp" style="display:none;">
+  <header class="nav" id="nav">
+    <a href="/" class="nav__brand"><img src="assets/logo.jpg" alt="Leman Market" data-logo><span class="dot" style="font-size:.8rem;">admin</span></a>
+    <nav class="nav__links"><a href="/">← Ke website</a></nav>
+    <button class="theme__toggle" id="themeToggle" aria-label="Ganti tema" title="Tema terang/gelap" style="margin-left:auto;">🌙</button>
+    <button class="btn btn--small btn--outline" id="adminLogout">Keluar</button>
+  </header>
+
+  <div class="admin-wrap">
+    <div class="note-box">
+      <strong>Penting:</strong> data di sini disimpan di <code>localStorage</code> browser ini saja — belum database
+      bersama. Artinya perubahan harga/produk/logo cuma kelihatan di HP/browser yang lo pakai buat edit, dan pesanan
+      yang tercatat cuma yang masuk lewat browser ini juga. Kalau mau semua pengunjung otomatis lihat perubahan yang
+      sama + histori pesanan beneran tergabung dari semua orang, itu butuh backend + database asli (lihat README.md).
+      Untuk sekarang, pakai tombol <strong>Export JSON</strong> di bawah lalu tempel ke <code>src/lib/data.js</code> supaya
+      perubahan permanen dan kelihatan buat semua orang setelah di-deploy ulang.
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat"><div class="n" id="statProducts">0</div><div class="l">Produk</div></div>
+      <div class="stat"><div class="n" id="statCategories">0</div><div class="l">Kategori</div></div>
+      <div class="stat"><div class="n" id="statSongs">0</div><div class="l">Lagu</div></div>
+      <div class="stat"><div class="n" id="statOrders">0</div><div class="l">Pesanan (device ini)</div></div>
+      <div class="stat"><div class="n" id="statVisits">—</div><div class="l">Kunjungan Home</div></div>
+    </div>
+
+    <div class="admin-block">
+      <h3>Password Admin</h3>
+      <p class="desc">Password default diatur di <code>config.js</code> (<code>adminPassword</code>). Ganti di sini kalau mau override khusus buat browser ini aja (disimpan lewat localStorage) — tanpa harus edit kode.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <input type="password" id="newAdminPass" placeholder="Password baru" style="max-width:220px;background:var(--bg-alt);border:1px solid var(--border);color:var(--ink);border-radius:6px;padding:9px 12px;">
+        <button class="btn btn--small btn--primary" id="saveAdminPass">Simpan Password</button>
+        <button class="btn btn--small btn--outline" id="resetAdminPass">Reset ke default</button>
+      </div>
+      <p id="adminPassMsg" style="font-size:.8rem;color:var(--green, #16a34a);display:none;margin-top:10px;"></p>
+    </div>
+
+    <div class="admin-block">
+      <h3>Logo</h3>
+      <p class="desc">Upload logo baru — otomatis dipakai di navbar/hero/loader (di browser ini). Ditampilin kotak (1:1), jadi paling bagus upload gambar yang udah persegi.</p>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <img id="logoPreview" class="logo-preview" src="assets/logo.jpg" alt="">
+        <input type="file" id="logoUpload" accept="image/*">
+        <button class="btn btn--small btn--outline" id="logoReset">Reset ke default</button>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <h3>Lagu Favorit</h3>
+      <p class="desc">
+        Judul, artis, dan path/link file mp3-nya. Taruh file di folder <code>assets/songs/</code> lalu isi kolom
+        src dengan <code>assets/songs/namafile.mp3</code> — atau tempel link mp3 langsung kalau host di tempat lain.
+        Kalau src kosong/gak ketemu, tombol lagu otomatis fallback buka pencarian YouTube (aman, gak nyimpen lagu
+        berhak cipta orang lain di server kita).
+      </p>
+      <div class="srow row-head"><span>Judul</span><span>Artis</span><span>Src (mp3)</span><span></span></div>
+      <div id="songRows"></div>
+      <div class="admin-actions">
+        <button class="btn btn--small" id="addSongRow">+ Tambah Lagu</button>
+        <button class="btn btn--small btn--primary" id="saveSongs">Simpan Lagu</button>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <h3>Kategori</h3>
+      <p class="desc">Icon: nama icon (<code>server</code>, <code>pen-tool</code>, <code>bot</code>, <code>smartphone</code>, <code>sparkles</code>, <code>trending-up</code>), emoji, atau HTML <code>&lt;img src="..."&gt;</code>. Centang "Panel" kalau kategori ini butuh kolom username (panel hosting).</p>
+      <div class="arow row-head"><span>Nama</span><span>Icon</span><span>Panel?</span><span>Catatan</span><span></span></div>
+      <div id="catRows"></div>
+      <div class="admin-actions">
+        <button class="btn btn--small" id="addCatRow">+ Tambah Kategori</button>
+        <button class="btn btn--small btn--primary" id="saveCats">Simpan Kategori</button>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <h3>Produk</h3>
+      <p class="desc">Harga kosong/0 = tampil sebagai "Chat WA" di halaman market.</p>
+      <div class="crow row-head"><span></span><span>Nama</span><span>Harga</span><span>Kategori</span><span></span></div>
+      <div id="prodRows"></div>
+      <div class="admin-actions">
+        <button class="btn btn--small" id="addProdRow">+ Tambah Produk</button>
+        <button class="btn btn--small btn--primary" id="saveProds">Simpan Produk</button>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <h3>Riwayat Pesanan (lokal)</h3>
+      <p class="desc">Tercatat otomatis tiap ada yang klik "Lanjutkan ke WhatsApp" di halaman Market, di browser ini.</p>
+      <div style="overflow-x:auto;">
+        <table class="orders" id="ordersTable">
+          <thead><tr><th>Waktu</th><th>Produk</th><th>Kategori</th><th>Nama</th><th>Kontak</th></tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+      <div class="admin-actions">
+        <button class="btn btn--small btn--outline" id="clearOrders">Hapus Riwayat</button>
+      </div>
+    </div>
+
+    <div class="admin-block">
+      <h3>Export / Reset</h3>
+      <p class="desc">Export buat backup atau ditempel manual ke <code>src/lib/data.js</code>. Reset mengembalikan semua ke bawaan file.</p>
+      <div class="admin-actions">
+        <button class="btn btn--small" id="exportBtn">Export JSON</button>
+        <button class="btn btn--small btn--outline" id="resetAllBtn">Reset Semua ke Default</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/admin-core.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
