@@ -1,9 +1,11 @@
 // KONFIGURASI SITUS — ganti di sini, otomatis kepakai di seluruh website.
 // (File ini juga disalin ke public/js/config.js untuk panel admin lewat `npm run sync:admin`.)
 export const SITE = {
-  siteName: "Leman Market",
+  siteName: "Leman Creative Studio",
   tagline: "Kang Logo & Digital Store",
   // nomor WA utama (format internasional, tanpa "+" atau spasi)
+  // email kontak (kosongkan jika belum ada)
+  email: "",
   waNumber: "628811399638",
   social: {
     youtube: "https://www.youtube.com/@Leman.market",

@@ -15,7 +15,7 @@ export default function MiniPlayer() {
   }, [index]);
 
   return (
-    <div className="pointer-events-none fixed bottom-[calc(env(safe-area-inset-bottom)+1rem)] left-4 z-40 max-w-[calc(100vw-6.5rem)]">
+    <div className="pointer-events-none fixed bottom-[calc(env(safe-area-inset-bottom)+5.5rem)] md:bottom-[calc(env(safe-area-inset-bottom)+1rem)] left-4 z-40 max-w-[calc(100vw-6.5rem)]">
       <AnimatePresence mode="wait">
         {song && !hidden && (
           <motion.div

@@ -1,19 +1,17 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 /** fade + naik halus saat masuk viewport */
-export default function Reveal({ children, delay = 0, y = 28, className, as = "div", ...props }) {
+export default function Reveal({ children, delay = 0, y = 24, className }) {
   const reduce = useReducedMotion();
-  const Comp = motion[as] || motion.div;
   return (
-    <Comp
+    <motion.div
       initial={reduce ? false : { opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-70px" }}
-      transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
-      {...props}
     >
       {children}
-    </Comp>
+    </motion.div>
   );
 }

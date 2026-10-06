@@ -3,10 +3,11 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "redirects": [
-    { "source": "/tools", "destination": "/", "permanent": true },
-    { "source": "/tools.html", "destination": "/", "permanent": true },
-    { "source": "/index.html", "destination": "/", "permanent": true },
-    { "source": "/market.html", "destination": "/#market", "permanent": true },
-    { "source": "/kontak.html", "destination": "/#contact", "permanent": true }
-  ]
+    { "source": "/tools", "destination": "/home", "permanent": true },
+    { "source": "/tools.html", "destination": "/home", "permanent": true },
+    { "source": "/index.html", "destination": "/home", "permanent": true },
+    { "source": "/market.html", "destination": "/store", "permanent": true },
+    { "source": "/kontak.html", "destination": "/contact", "permanent": true }
+  ],
+  "rewrites": [{ "source": "/((?!admin|assets|js|static).*)", "destination": "/index.html" }]
 }
