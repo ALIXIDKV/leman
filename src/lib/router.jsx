@@ -1,10 +1,10 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
-// Router mini berbasis History API (tanpa dependency tambahan): /home, /store, /contact
+// Router mini berbasis History API (tanpa dependency tambahan): /home, /store, /store/:kategori, /contact
 export const ROUTES = ["/home", "/store", "/contact"];
 const normalize = (p) => {
   const x = p.replace(/\/+$/, "") || "/";
-  return ROUTES.includes(x) ? x : "/home";
+  return ROUTES.includes(x) || /^\/store\/[a-z0-9-]+$/.test(x) ? x : "/home";
 };
 
 const Ctx = createContext(null);

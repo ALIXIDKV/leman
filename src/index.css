@@ -112,24 +112,6 @@
     content: "";
     @apply h-px w-6 bg-primary/60;
   }
-  /* spotlight yang mengikuti kursor pada kartu produk */
-  .spot {
-    position: relative;
-    isolation: isolate;
-  }
-  .spot::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), hsl(var(--glow) / 0.16), transparent 70%);
-  }
-  .spot:hover::before {
-    opacity: 1;
-  }
   .no-scrollbar {
     scrollbar-width: none;
   }
@@ -146,38 +128,3 @@ html.theme-anim *::after {
     stroke 0.55s ease, box-shadow 0.55s ease !important;
 }
 
-/* ---- Ant Design: sesuaikan dengan tema glass ---- */
-.order-modal .ant-modal-content {
-  background: hsl(var(--popover) / 0.92) !important;
-  -webkit-backdrop-filter: blur(30px);
-  backdrop-filter: blur(30px);
-  border: 1px solid var(--glass-border);
-  border-radius: 28px;
-  box-shadow: var(--glass-shadow), 0 40px 120px -30px rgba(0, 0, 0, 0.6);
-  padding: 24px;
-}
-.order-modal .ant-modal-close {
-  top: 18px;
-  inset-inline-end: 18px;
-}
-.order-modal .ant-input,
-.order-modal .ant-input-affix-wrapper {
-  border-radius: 14px;
-  padding: 10px 14px;
-}
-@media (max-width: 640px) {
-  /* bottom sheet ala iOS */
-  .order-modal .ant-modal {
-    position: fixed;
-    inset: auto 0 0 0;
-    top: auto !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 0;
-    padding: 0;
-  }
-  .order-modal .ant-modal-content {
-    border-radius: 28px 28px 0 0;
-    padding-bottom: calc(24px + env(safe-area-inset-bottom));
-  }
-}

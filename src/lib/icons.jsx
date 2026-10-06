@@ -1,21 +1,17 @@
-import { Server, PenTool, Bot, Smartphone, Sparkles, TrendingUp, Star } from "lucide-react";
+import { Zap, ShieldCheck, PenTool, Bot, Smartphone, Crown, TrendingUp, Star } from "lucide-react";
 
 const MAP = {
-  server: Server,
+  zap: Zap,
+  "shield-check": ShieldCheck,
   "pen-tool": PenTool,
   bot: Bot,
   smartphone: Smartphone,
-  sparkles: Sparkles,
+  crown: Crown,
   "trending-up": TrendingUp,
 };
 
-/** icon kategori: nama lucide, <img src>, atau emoji (hasil edit admin) */
+/** icon kategori berdasarkan nama lucide (fallback: bintang) */
 export function CategoryIcon({ icon, className }) {
-  const key = String(icon || "").trim();
-  const Cmp = MAP[key];
-  if (Cmp) return <Cmp className={className} aria-hidden="true" />;
-  const img = key.match(/<img[^>]+src=["']([^"']+)["']/i);
-  if (img) return <img src={img[1]} alt="" loading="lazy" className={className} />;
-  if (key && key.length <= 4) return <span className={className} aria-hidden="true">{key}</span>;
-  return <Star className={className} aria-hidden="true" />;
+  const Cmp = MAP[String(icon || "").trim()] || Star;
+  return <Cmp className={className} aria-hidden="true" />;
 }

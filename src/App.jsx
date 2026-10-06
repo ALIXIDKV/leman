@@ -5,13 +5,14 @@ import { Router, useRouter } from "@/lib/router";
 import Layout from "@/components/Layout";
 import HomePage from "@/pages/HomePage";
 import StorePage from "@/pages/StorePage";
+import StoreDetailPage from "@/pages/StoreDetailPage";
 import ContactPage from "@/pages/ContactPage";
 
 const PAGES = { "/home": HomePage, "/store": StorePage, "/contact": ContactPage };
 
 function Routes() {
   const { path } = useRouter();
-  const Page = PAGES[path];
+  const Page = path.startsWith("/store/") ? StoreDetailPage : PAGES[path];
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.main

@@ -16,21 +16,21 @@ Vercel: otomatis (`vercel.json` → `npm run build`, output `dist`).
 src/
   main.jsx · App.jsx · index.css       entry, susunan halaman, tema (CSS variables) + utilitas glass
   components/
-    ThemeCharacterToggle.jsx           tombol dark/light dengan karakter berjalan (Framer Motion + Tailwind animation)
+    ThemeToggle.jsx                    switch sun/moon dark/light (Framer Motion + Tailwind)
     theme-provider.jsx                 sumber kebenaran dark/light + sinkron ke Ant Design
     player-provider.jsx · MiniPlayer   pemutar lagu persisten (lagu tidak putus saat scroll/pindah section)
-    Navbar · Hero · About · Marketplace · ProductCard · OrderDialog · Contact · Footer
-    ui/                                shadcn/ui: button, badge, card, sheet, navigation-menu
+    CategoryCard · Layout · MiniPlayer · Reveal · Ambient
+    ui/                                shadcn/ui: button, badge, card
   lib/
     config.js                          nama, tagline, nomor WA, link sosmed
-    data.js                            kategori, produk, harga, lagu
-    storage.js                         baca override dari panel admin (localStorage)
+    data.js                            STORE_CATEGORIES (kategori + harga), lagu
+    storage.js                         baca override lagu/logo dari panel admin (localStorage)
 public/
   assets/                              logo, favicon, lagu (aset lama, tidak diubah)
   admin.html + admin.css + js/         panel admin lama (mandiri, fungsi utuh)
 scripts/sync-admin-data.mjs            menyalin src/lib/{config,data}.js -> public/js (otomatis saat dev/build)
 ```
-Ganti harga/produk: `src/lib/data.js`. Ganti WA/sosmed: `src/lib/config.js`.
+Store: `/store` (7 kategori) → `/store/<slug>` (detail harga). Ganti harga/produk: `STORE_CATEGORIES` di `src/lib/data.js`. Ganti WA/sosmed: `src/lib/config.js`.
 Password default admin: env `ADMIN_PASSWORD` saat build (default `leman2024`) — client-side, bukan keamanan sungguhan.
 
 ## Dark / light mode
